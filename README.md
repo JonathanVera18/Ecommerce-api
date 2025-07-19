@@ -76,7 +76,7 @@ ecommerce-api/
 
 1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
+   git clone <https://github.com/JonathanVera18/Ecommerce-api>
    cd ecommerce-api
    ```
 
@@ -317,17 +317,7 @@ The API provides a health check endpoint:
 4. Add tests for your changes
 5. Run the test suite
 6. Submit a pull request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Support
-
-For support and questions:
-- Create an issue on GitHub
-- Email: support@ecommerce.com
-- Documentation: [API Docs](./docs/API.md)
+ 
 
 ## Changelog
 
