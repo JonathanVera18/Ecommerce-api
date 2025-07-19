@@ -12,6 +12,7 @@ require (
 	github.com/redis/go-redis/v9 v9.3.1
 	github.com/stripe/stripe-go/v76 v76.25.0
 	golang.org/x/crypto v0.38.0
+	golang.org/x/time v0.12.0
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.30.0
 )
@@ -39,5 +40,4 @@ require (
 	golang.org/x/sync v0.14.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
 	golang.org/x/text v0.25.0 // indirect
-	golang.org/x/time v0.5.0 // indirect
 )

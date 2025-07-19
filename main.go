@@ -93,8 +93,15 @@ func main() {
 	// Global middleware
 	e.Use(echomiddleware.Logger())
 	e.Use(echomiddleware.Recover())
+	e.Use(middleware.SecurityHeaders())
 	e.Use(middleware.CORS())
 	e.Use(middleware.Logging())
+	e.Use(middleware.APIRateLimit())
+
+	// HTTPS redirect in production
+	if os.Getenv("APP_ENV") == "production" {
+		e.Use(middleware.HTTPSRedirect())
+	}
 
 	// Routes
 	handler.SetupRoutes(e, &handler.Handlers{

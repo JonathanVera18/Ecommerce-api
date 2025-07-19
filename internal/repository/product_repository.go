@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/JonathanVera18/ecommerce-api/internal/models"
 	"gorm.io/gorm"
@@ -66,9 +65,11 @@ func (r *productRepository) GetBySellerID(ctx context.Context, sellerID uint, li
 
 func (r *productRepository) Search(ctx context.Context, query string, limit, offset int) ([]*models.Product, error) {
 	var products []*models.Product
-	searchPattern := fmt.Sprintf("%%%s%%", query)
+	
+	// Use parameterized queries to prevent SQL injection
+	// GORM automatically handles the parameterization when using ? placeholders
 	err := r.db.WithContext(ctx).
-		Where("name ILIKE ? OR description ILIKE ?", searchPattern, searchPattern).
+		Where("name ILIKE ? OR description ILIKE ?", "%"+query+"%", "%"+query+"%").
 		Preload("Reviews").
 		Limit(limit).
 		Offset(offset).

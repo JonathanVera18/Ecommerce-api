@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/redis/go-redis/v9"
@@ -49,6 +50,11 @@ func (s *authService) Register(ctx context.Context, req *models.RegisterRequest)
 		Role:      req.Role,
 		Phone:     req.Phone,
 		IsActive:  true,
+	}
+
+	// Validate password strength
+	if err := utils.ValidatePassword(req.Password); err != nil {
+		return nil, fmt.Errorf("password validation failed: %w", err)
 	}
 
 	// Hash password
@@ -143,6 +149,11 @@ func (s *authService) ChangePassword(ctx context.Context, userID uint, req *mode
 		return errors.New("current password is incorrect")
 	}
 
+	// Validate new password strength
+	if err := utils.ValidatePassword(req.NewPassword); err != nil {
+		return fmt.Errorf("new password validation failed: %w", err)
+	}
+
 	// Hash new password
 	if err := user.HashPassword(req.NewPassword); err != nil {
 		return err
@@ -211,6 +222,11 @@ func (s *authService) ResetPassword(ctx context.Context, token string, newPasswo
 			return errors.New("invalid or expired token")
 		}
 		return err
+	}
+
+	// Validate new password strength
+	if err := utils.ValidatePassword(newPassword); err != nil {
+		return fmt.Errorf("password validation failed: %w", err)
 	}
 
 	// Hash new password

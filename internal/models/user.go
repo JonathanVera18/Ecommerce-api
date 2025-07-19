@@ -21,7 +21,7 @@ type User struct {
 	FirstName    string    `json:"first_name" gorm:"type:varchar(100);not null" validate:"required,min=2,max=100"`
 	LastName     string    `json:"last_name" gorm:"type:varchar(100);not null" validate:"required,min=2,max=100"`
 	Email        string    `json:"email" gorm:"type:varchar(255);unique;not null" validate:"required,email"`
-	Password     string    `json:"-" gorm:"type:varchar(255);not null" validate:"required,min=8"`
+	Password     string    `json:"-" gorm:"type:varchar(255);not null" validate:"required,min=12,containsany=!@#$%^&*,containsany=0123456789,containsany=ABCDEFGHIJKLMNOPQRSTUVWXYZ,containsany=abcdefghijklmnopqrstuvwxyz"`
 	Phone        *string   `json:"phone,omitempty" gorm:"type:varchar(20)" validate:"omitempty,e164"`
 	Role         UserRole  `json:"role" gorm:"type:varchar(20);not null;default:'customer'" validate:"required,oneof=customer seller admin"`
 	IsActive     bool      `json:"is_active" gorm:"default:true"`

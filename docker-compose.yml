@@ -11,11 +11,11 @@ services:
     image: postgres:15
     container_name: ecommerce_postgres
     environment:
-      POSTGRES_DB: ecommerce_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${DB_NAME:-ecommerce_db}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-change_this_password_in_production}
     ports:
-      - "5433:5432"
+      - "${DB_PORT:-5433}:5432"
     volumes:  
       - postgres_data:/var/lib/postgresql/data
       - ./migrations:/docker-entrypoint-initdb.d
@@ -44,15 +44,15 @@ services:
     environment:
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: password
-      DB_NAME: ecommerce_db
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-change_this_password_in_production}
+      DB_NAME: ${DB_NAME:-ecommerce_db}
       DB_SSL_MODE: disable
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      JWT_SECRET: your-super-secret-jwt-key-change-this-in-production
+      JWT_SECRET: ${JWT_SECRET:-please_set_a_very_long_and_secure_jwt_secret_in_production}
       SERVER_PORT: 8080
-      APP_ENV: development
+      APP_ENV: ${APP_ENV:-development}
     ports:
       - "8081:8080"
     depends_on:

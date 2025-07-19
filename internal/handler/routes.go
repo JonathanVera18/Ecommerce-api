@@ -31,8 +31,9 @@ func SetupRoutes(e *echo.Echo, handlers *Handlers, authService service.AuthServi
 	// API version group
 	api := e.Group("/api/v1")
 
-	// Auth routes (no authentication required)
+	// Auth routes (with stricter rate limiting)
 	auth := api.Group("/auth")
+	auth.Use(middleware.AuthRateLimit()) // Stricter rate limiting for auth endpoints
 	auth.POST("/register", handlers.Auth.Register)
 	auth.POST("/login", handlers.Auth.Login)
 	auth.POST("/refresh", handlers.Auth.RefreshToken)
