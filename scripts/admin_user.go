@@ -22,9 +22,22 @@ func main() {
 		log.Fatal("Failed to initialize database:", err)
 	}
 
-	// Create admin user
-	adminEmail := "admin@example.com"
-	adminPassword := "admin123"
+	// Get admin credentials from environment variables
+	adminEmail := os.Getenv("ADMIN_EMAIL")
+	adminPassword := os.Getenv("ADMIN_PASSWORD")
+
+	// Validate required environment variables
+	if adminEmail == "" {
+		log.Fatal("ADMIN_EMAIL environment variable is required")
+	}
+	if adminPassword == "" {
+		log.Fatal("ADMIN_PASSWORD environment variable is required")
+	}
+
+	// Validate password strength
+	if len(adminPassword) < 12 {
+		log.Fatal("Admin password must be at least 12 characters long")
+	}
 
 	// Check if admin user already exists
 	var existingUser models.User
@@ -43,11 +56,6 @@ func main() {
 		IsVerified: true,
 	}
 
-	// Set password from environment or use default
-	if envPassword := os.Getenv("ADMIN_PASSWORD"); envPassword != "" {
-		adminPassword = envPassword
-	}
-
 	if err := admin.HashPassword(adminPassword); err != nil {
 		log.Fatal("Failed to hash admin password:", err)
 	}
@@ -59,7 +67,8 @@ func main() {
 
 	fmt.Printf("Admin user created successfully!\n")
 	fmt.Printf("Email: %s\n", adminEmail)
-	fmt.Printf("Password: %s\n", adminPassword)
 	fmt.Printf("Role: %s\n", admin.Role)
-	fmt.Println("Please change the password after first login!")
+	fmt.Println("Admin password has been set securely.")
+	fmt.Println("⚠️  IMPORTANT: Change the password after first login for additional security!")
+}
 }
